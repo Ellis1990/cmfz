@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ellis.cmfz.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.ellis.cmfz.entity.User">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="profile_pic" jdbcType="VARCHAR" property="profilePic" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="darma" jdbcType="VARCHAR" property="darma" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="bio" jdbcType="VARCHAR" property="bio" />
+    <result column="signup_date" jdbcType="DATE" property="signupDate" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, username, password, profile_pic, phone, darma, name, gender, state, city, bio, 
+    signup_date, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectCountGroupByState" resultType="com.ellis.cmfz.entity.UserMap">
+    select state as name , count(1) as value
+    from user
+    group by state
+  </select>
+
+  <select id="selectUserByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user limit #{start},#{pageindex}
+  </select>
+  
+  <select id="selectAllCounts" resultType="java.lang.Integer">
+    select
+    count(0) from user
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByIDs" parameterType="java.lang.String">
+    delete from user
+    where id in
+    <foreach collection="array" open="(" separator="," close=")" item="ids">
+      #{ids}
+    </foreach>
+  </delete>
+
+  <insert id="insert" parameterType="com.ellis.cmfz.entity.User">
+    insert into user (id, username, password, 
+      profile_pic, phone, darma, 
+      name, gender, state, 
+      city, bio, signup_date, 
+      status)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{profilePic,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{darma,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{bio,jdbcType=VARCHAR}, #{signupDate,jdbcType=DATE}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ellis.cmfz.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="profilePic != null">
+        profile_pic,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="darma != null">
+        darma,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="bio != null">
+        bio,
+      </if>
+      <if test="signupDate != null">
+        signup_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="profilePic != null">
+        #{profilePic,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="darma != null">
+        #{darma,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="bio != null">
+        #{bio,jdbcType=VARCHAR},
+      </if>
+      <if test="signupDate != null">
+        #{signupDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ellis.cmfz.entity.User">
+    update user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="profilePic != null">
+        profile_pic = #{profilePic,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="darma != null">
+        darma = #{darma,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="bio != null">
+        bio = #{bio,jdbcType=VARCHAR},
+      </if>
+      <if test="signupDate != null">
+        signup_date = #{signupDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ellis.cmfz.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      profile_pic = #{profilePic,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      darma = #{darma,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      bio = #{bio,jdbcType=VARCHAR},
+      signup_date = #{signupDate,jdbcType=DATE},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ellis.cmfz.mapper.AlbumMapper">
+  <resultMap id="BaseResultMap" type="com.ellis.cmfz.entity.Album">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="score" jdbcType="VARCHAR" property="score" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="broadcaster" jdbcType="VARCHAR" property="broadcaster" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="create_date" jdbcType="DATE" property="createDate" />
+    <result column="pic_path" jdbcType="VARCHAR" property="picPath" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ellis.cmfz.entity.Album">
+    <result column="bio" jdbcType="LONGVARCHAR" property="bio" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, score, author, broadcaster, count, create_date, pic_path, status
+  </sql>
+  <sql id="Blob_Column_List">
+    bio
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from album
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAllByPage" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from album
+    where 1=1 limit #{start},#{pageindex}
+  </select>
+
+  <select id="selectAllCounts" resultType="java.lang.Integer">
+    select
+    count(1)
+    from album
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from album
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByIDs" parameterType="String">
+    delete from album
+    where id in
+    <foreach collection="array" open="(" separator="," close=")" item="ids">
+      #{ids}
+    </foreach>
+  </delete>
+
+  <insert id="insert" parameterType="com.ellis.cmfz.entity.Album">
+    insert into album (id, title, score, 
+      author, broadcaster, count, 
+      create_date, pic_path, status, 
+      bio)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{score,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{broadcaster,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=DATE}, #{picPath,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{bio,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ellis.cmfz.entity.Album">
+    insert into album
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="broadcaster != null">
+        broadcaster,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="picPath != null">
+        pic_path,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="bio != null">
+        bio,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="broadcaster != null">
+        #{broadcaster,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="picPath != null">
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="bio != null">
+        #{bio,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ellis.cmfz.entity.Album">
+    update album
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="broadcaster != null">
+        broadcaster = #{broadcaster,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="picPath != null">
+        pic_path = #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="bio != null">
+        bio = #{bio,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ellis.cmfz.entity.Album">
+    update album
+    set title = #{title,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      broadcaster = #{broadcaster,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=DATE},
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      bio = #{bio,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ellis.cmfz.entity.Album">
+    update album
+    set title = #{title,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      broadcaster = #{broadcaster,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=DATE},
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

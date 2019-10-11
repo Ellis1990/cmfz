@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ellis.cmfz.mapper.BannerMapper">
+  <resultMap id="BaseResultMap" type="com.ellis.cmfz.entity.Banner">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="pic_path" jdbcType="VARCHAR" property="picPath" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_date" jdbcType="DATE" property="createDate" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, pic_path, status, create_date, description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from banner
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectActiveAllByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from banner
+    where 1=1 limit #{start},#{pageIndex}
+  </select>
+
+  <select id="selectAllCounts" resultType="java.lang.Integer">
+    select
+    count(1)
+    from banner
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from banner
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByIDs" parameterType="java.lang.String">
+    delete from banner
+    where id in
+    <foreach collection="array" open="(" separator="," close=")" item="ids">
+      #{ids}
+    </foreach>
+  </delete>
+
+  <insert id="insert" parameterType="com.ellis.cmfz.entity.Banner">
+    insert into banner (id, title, pic_path, 
+      status, create_date, description
+      )
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ellis.cmfz.entity.Banner">
+    insert into banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="picPath != null">
+        pic_path,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null">
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ellis.cmfz.entity.Banner">
+    update banner
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null">
+        pic_path = #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ellis.cmfz.entity.Banner">
+    update banner
+    set title = #{title,jdbcType=VARCHAR},
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=DATE},
+      description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

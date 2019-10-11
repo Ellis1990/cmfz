@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ellis.cmfz.mapper.CounterMapper">
+  <resultMap id="BaseResultMap" type="com.ellis.cmfz.entity.Counter">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="latest_time" jdbcType="DATE" property="latestTime" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="taskid" jdbcType="VARCHAR" property="taskid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, count, latest_time, userid, taskid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from counter
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from counter
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ellis.cmfz.entity.Counter">
+    insert into counter (id, title, count, 
+      latest_time, userid, taskid
+      )
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
+      #{latestTime,jdbcType=DATE}, #{userid,jdbcType=VARCHAR}, #{taskid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ellis.cmfz.entity.Counter">
+    insert into counter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="latestTime != null">
+        latest_time,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="taskid != null">
+        taskid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="latestTime != null">
+        #{latestTime,jdbcType=DATE},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskid != null">
+        #{taskid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ellis.cmfz.entity.Counter">
+    update counter
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="latestTime != null">
+        latest_time = #{latestTime,jdbcType=DATE},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskid != null">
+        taskid = #{taskid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ellis.cmfz.entity.Counter">
+    update counter
+    set title = #{title,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      latest_time = #{latestTime,jdbcType=DATE},
+      userid = #{userid,jdbcType=VARCHAR},
+      taskid = #{taskid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
